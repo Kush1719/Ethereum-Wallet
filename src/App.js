@@ -1,23 +1,35 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import WalletConnect from './components/WalletConnect';
+import WalletBalance from './components/WalletBalance';
+import EthereumTransactions from './components/EthereumTransactions';
+import ERC20Transactions from './components/ERC20Transactions';
 import './App.css';
+import './WalletStyles.css';
 
 function App() {
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [address, setAddress] = useState(null);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Ethereum Wallet</h1>
+      <WalletConnect 
+        setProvider={setProvider} 
+        setSigner={setSigner} 
+        setAddress={setAddress} 
+      />
+      {signer && address && (
+        <>
+          <WalletBalance signer={signer} />
+          <div className="wallet-section">
+            <EthereumTransactions signer={signer} />
+          </div>
+          <div className="wallet-section">
+            <ERC20Transactions signer={signer} />
+          </div>
+        </>
+      )}
     </div>
   );
 }
